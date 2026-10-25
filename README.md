@@ -88,3 +88,6 @@ This project is developed for the OpenCV AI Competition 2026 and is distributed 
 
 
 
+
+## 🚀 Live Demo
+Access the deployed application here: [OmniInspect Enterprise Streamlit App](https://omniinspect-ai-ialbbmzohmxvknbos5vjpy.streamlit.app)
