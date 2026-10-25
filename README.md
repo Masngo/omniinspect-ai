@@ -1,93 +1,118 @@
-# OmniInspect-Enterprise 🚀
-**Autonomous Industrial Inspection Platform Powered by OpenCV 5, AWS Graviton (COOL), and Agentic Vision Loops**
+# OmniInspect Enterprise
+
+Autonomous Multi-Modal Visual Inspection & Quality Control System  
+*Submitted to the OpenCV AI Competition 2026*
+
+<p align="left">
+  <a href="https://omniinspect-ai-ialbbmzohmxvknbos5vjpy.streamlit.app">
+    <img src="https://img.shields.io/badge/Open_in-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit Live App">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT">
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Version">
+  </a>
+  <a href="https://opencv.org/">
+    <img src="https://img.shields.io/badge/OpenCV-5.0-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV 5">
+  </a>
+</p>
 
 ---
 
-## 📋 Overview
-**OmniInspect-Enterprise** is an advanced, production-grade automated optical inspection (AOI) system designed for high-throughput manufacturing environments. Built for the **OpenCV AI Competition 2026**, the system bridges low-latency computer vision with an autonomous agentic decision-making loop. 
+## 🔗 Quick Links & Live Demos
 
-Traditional inspection platforms rely on static pixel thresholds that result in high false-positive rates when handling edge cases or minor lighting variations. OmniInspect-Enterprise solves this by combining **OpenCV 5** high-throughput image processing pipelines, **AWS Graviton / COOL** cloud acceleration, and a multi-step **Model Context Protocol (MCP)** perception-decision-action loop that dynamically adjusts handling for ambiguous items.
+* 🌐 **Live Streamlit App:** [https://omniinspect-ai-ialbbmzohmxvknbos5vjpy.streamlit.app](https://omniinspect-ai-ialbbmzohmxvknbos5vjpy.streamlit.app)
+* 📁 **GitHub Repository:** [https://github.com/Masngo/omniinspect-ai](https://github.com/Masngo/omniinspect-ai)[cite: 2]
+* 🎥 **3-Minute Demo Video:** [YouTube / Vimeo Demo Link] *(See Devpost Submission)*
+* 🏛️ **System Architecture Spec:** Documented below in this README
 
 ---
 
-## 🏗️ System Architecture
+## 1. System Architecture Overview
 
 ```text
-  ┌────────────────────────────────────────────────────────┐
-  │                    Streamlit Dashboard                  │
-  └───────────────────────────┬────────────────────────────┘
-                              │ Live Telemetry & Control Feed
-                              ▼
-  ┌────────────────────────────────────────────────────────┐
-  │         Agentic Perception-Decision-Action Loop        │
-  │              (Model Context Protocol / MCP)            │
-  └──────────────┬──────────────────────────▲──────────────┘
-                 │ Dynamic Tool Invocation  │ Feedback / Metrics
-                 ▼                          │
-  ┌────────────────────────────────────────────────────────┐
-  │       OpenCV 5 (COOL) High-Throughput Engine           │
-  │        - Graviton ARM Neon SIMD Acceleration           │
-  │        - Advanced Registration & Defect Detection      │
-  └───────────────────────────┬────────────────────────────┘
-                              │ Benchmarks & Logging
-                              ▼
-  ┌────────────────────────────────────────────────────────┐
-  │              AWS Graviton Cloud Endpoint               │
-  └────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          1. INPUT & INGESTION PIPELINE                          │
+│                                                                                 │
+│   [ Live Camera Stream ]               [ Interactive Upload ]                   │
+│   (RTSP / Video Feed)                  (Images, Videos, Archives)               │
+│            │                                       │                            │
+│            └───────────────────┬───────────────────┘                            │
+│                                │                                                │
+│                                ▼                                                │
+│                   ┌─────────────────────────┐                                   │
+│                   │ Streamlit Ingestion UI  │                                   │
+│                   └────────────┬────────────┘                                   │
+│                                │ Validation & Buffer                            │
+│                                ▼                                                │
+│                   ┌─────────────────────────┐                                   │
+│                   │ Secure RAM / In-Memory  │                                   │
+│                   └────────────┬────────────┘                                   │
+└────────────────────────────────┼────────────────────────────────────────────────┘
+                                 │ Decoded Frame Streams
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          2. CORE PROCESSING ENGINE                              │
+│                                                                                 │
+│                   ┌─────────────────────────┐                                   │
+│                   │    OpenCV 5 Engine      │                                   │
+│                   │ (Pre-filter, Threshold, │                                   │
+│                   │  Edge & ROI Detection)  │                                   │
+│                   └────────────┬────────────┘                                   │
+│                                │ Extracted Features & Frame Tensors             │
+│                                ▼                                                │
+│                   ┌─────────────────────────┐                                   │
+│                   │  Agentic Vision Core    │                                   │
+│                   │ (Multi-Agent Reasoning, │                                   │
+│                   │  Defect Classification) │                                   │
+│                   └────────────┬────────────┘                                   │
+│                                │ Structured Payload                             │
+│                                ▼                                                │
+│                   ┌─────────────────────────┐                                   │
+│                   │  Pydantic Validation    │                                   │
+│                   │ (Schema Enforcement &   │                                   │
+│                   │   Tolerance Checks)     │                                   │
+│                   └────────────┬────────────┘                                   │
+└────────────────────────────────┼────────────────────────────────────────────────┘
+                                 │ Validated Detection Data
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         3. OPERATIONAL DASHBOARD                                │
+│                                                                                 │
+│                   ┌─────────────────────────┐                                   │
+│                   │  Streamlit Dashboard    │                                   │
+│                   │  • Bounding Box Overlay │                                   │
+│                   │  • Pass/Fail Analytics  │                                   │
+│                   │  • Real-Time Alerts     │                                   │
+│                   └─────────────────────────┘                                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+2. End-to-End Processing Workflow
+Step 1: Input Ingestion & In-Memory Preprocessing
+Multi-Modal Input Support: Ingests live video streams (RTSP/IP cameras) or manual inspection media via the Streamlit web interface.
 
+Validation & Security: Verifies uploaded files against supported format specifications (e.g., JPEG, PNG, MP4, AVI) to prevent corrupt payloads from entering the stream.
 
-🔑 Key FeaturesOpenCV 5 Substantive Vision Pipeline:Advanced image registration, structural similarity indexing, thresholding, and contour feature extraction using OpenCV 5 modules.Robust fallback mechanisms ensuring uninterrupted telemetry even in containerized runtime environments.AWS Graviton & COOL Optimization:Optimized for ARM-based AWS Graviton instances utilizing the Cloud-Optimized OpenCV Library (COOL) for high-speed SIMD vector execution.Reduced latency, higher frame throughput, and lower cost-per-inference compared to traditional x86 baseline architectures.Agentic Vision & MCP Integration:Implements a true multi-step perception-decision-action loop.When primary OpenCV analysis detects a borderline anomaly ($80.0\text{ px} < \text{defect\_area} < 450.0\text{ px}$), the system dynamically triggers secondary tool calls (e.g., adaptive sub-region cropping and contrast enhancement) to update the decision route (PASS, REVIEW_REQUIRED, or REJECT) without manual operator intervention.🛠️ Project Structure
+Zero-Disk In-Memory Buffer: Uploaded binaries and live stream frames are buffered directly in RAM as raw NumPy array representations, bypassing disk write overhead and minimizing processing latency.
 
-omniinspect-ai/
-├── .streamlit/
-│   └── config.toml          # Streamlit UI theme and server configuration
-├── src/
-│   ├── __init__.py
-│   ├── agent/               # MCP Agentic logic and orchestration
-│   └── vision/
-│       ├── __init__.py
-│       └── advanced_registration.py  # Core OpenCV 5 / COOL inspection pipeline
-├── web_demo/
-│   └── app.py               # Streamlit interactive enterprise dashboard
-├── packages.txt             # Linux system dependencies (libgl1, libglib2.0-0)
-├── requirements.txt         # Pinned Python dependencies
-└── README.md                # Project documentation & technical report
+Step 2: Computer Vision Feature Extraction (OpenCV 5 Engine)
+Image Normalization: Applies contrast adjustment, color space conversion, and noise reduction filters (e.g., Gaussian, Bilateral filtering).
 
-⚙️ Local Installation & Quickstart
-Clone the repository:
+Region of Interest (ROI) Cropping: Isolates key target regions across assembly lines or product components.
 
-git clone [https://github.com/Masngo/omniinspect-ai.git](https://github.com/Masngo/omniinspect-ai.git)
-cd omniinspect-ai
+Edge & Anomaly Pre-filtering: Executes high-speed Canny edge detection, thresholding, and contour extraction to isolate potential surface fractures, misalignments, or structural defects prior to deep analysis.
 
-Set up a virtual environment (Python 3.11 recommended):
+Step 3: Multi-Agent Reasoning (Agentic Vision Core)
+Defect Classification: Feeds extracted ROIs and visual feature maps into multi-agent vision models to classify anomaly types (e.g., surface scratches, dimensional out-of-tolerance, missing components, or packaging flaws).
 
-Bash
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-Install dependencies:
+Severity Analysis & Autonomous Remediation: Calculates anomaly confidence scores and severity indexes to automatically trigger component rejection flags or signal operational alarms.
 
-Bash
-pip install --upgrade pip
-pip install -r requirements.txt
-Run the Streamlit dashboard locally:
+Step 4: Data Validation & Schema Enforcement (Pydantic)
+Strict Schema Typing: Encapsulates visual inspection metrics into strictly defined Pydantic data models.
 
-Bash
-streamlit run web_demo/app.py
-📈 Performance & Benchmarks (AWS Graviton / COOL)
-Metric	Baseline x86 Standard	AWS Graviton + COOL	Improvement
-Throughput (FPS)	42 FPS	118 FPS	+180%
-Mean Latency (ms)	23.8 ms	8.4 ms	-64%
-CPU Utilization	78%	45%	Optimized (ARM Neon)
-🛡️ Responsible Operation & Limitations
-False-Positive Mitigation: Ambiguous triggers (REVIEW_REQUIRED) intentionally route items to human operators to ensure strict quality controls are maintained.
+Boundary & Quality Constraints: Enforces strict validation on bounding-box coordinates, detection timestamps, defect classes, and tolerance thresholds prior to UI rendering or database logging.
 
-Fail-Safe Design: If vision streams experience hardware or container interruptions, the system defaults to strict quarantine mode to prevent defective components from passing down the line.
+Step 5: Interactive Operational Dashboard (Streamlit UI)
+Real-Time Visual Overlay: Renders interactive image/video overlays featuring bounding boxes, segmentation masks, and color-coded severity tags.
 
-📜 License
-This project is developed for the OpenCV AI Competition 2026 and is distributed under the MIT License.
-
-
-
-
-## 🚀 Live Demo
-Access the deployed application here: [OmniInspect Enterprise Streamlit App](https://omniinspect-ai-ialbbmzohmxvknbos5vjpy.streamlit.app)
+Telemetry & Analytics: Summarizes pass/fail ratios, throughput metrics, defect density distribution, and audit trail records in real time.
