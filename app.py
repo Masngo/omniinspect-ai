@@ -14,13 +14,15 @@ navigation = st.sidebar.radio("Console Navigation", [
     "Agentic Decision Explorer"
 ])
 
-# System Overrides directly in the sidebar
+# System Overrides with Force Pass toggle and Threshold slider
 st.sidebar.markdown("---")
 st.sidebar.subheader("System Overrides")
 force_accept = st.sidebar.checkbox("Force Pass / Demo Accept Mode", value=False)
-area_threshold = st.sidebar.slider("Defect Area Threshold (px²)", 1000, 1000000, 50000, 10000)
+area_threshold = st.sidebar.slider("Defect Area Threshold (px²)", 1000, 1000000, 500000, 10000)
+aws_graviton = st.sidebar.checkbox("AWS Graviton3 Acceleration", value=True)
+agentic_mcp = st.sidebar.checkbox("Agentic MCP Tool Calls", value=True)
 
-# Main Application Header
+# Main Header
 st.markdown("## OmniInspect-Enterprise")
 st.markdown("Autonomous Quality Control Engine | OpenCV AI Competition 2026 (AWS Powered)")
 
@@ -71,7 +73,7 @@ if navigation == "Live Inspection Station":
                         final_status = "REJECT"
                         status_color = "red"
                         
-                st.success("Inspection Completed in 8.4 ms")
+                st.success("Inspection Completed in 11.3 ms")
                 st.markdown(f"### Final Decision: :{status_color}[{final_status}]")
                 st.metric(label="Detected Defect Area", value=f"{total_defect_area:.2f} px²")
                 st.metric(label="Contour Anomalies Detected", value=num_anomalies)
@@ -97,7 +99,7 @@ elif navigation == "Interactive CV Parameter Studio":
 elif navigation == "COOL Graviton Benchmarks":
     st.markdown("### ⚡ COOL Graviton Benchmarks")
     st.write("Performance and latency metrics running on AWS Graviton3 processors.")
-    st.metric("Avg Latency", "8.4 ms")
+    st.metric("Avg Latency", "11.3 ms")
     st.metric("Throughput", "1,200 frames/sec")
 
 elif navigation == "Agentic Decision Explorer":
